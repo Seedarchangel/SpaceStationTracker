@@ -8,6 +8,7 @@ import plotly.plotly as py
 from plotly import tools
 from pyorbital.orbital import Orbital
 import plotly.graph_objs as go 
+import os
 
 def initname():
     return [
@@ -89,7 +90,8 @@ def initname():
     {'label': 'PROGRESS-MS 08', 'value': 'PROGRESS-MS 08'}]
 
 
-
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+my_file = os.path.join(THIS_FOLDER, 'stations.txt')
 app = dash.Dash(__name__)
 app.css.append_css({"external_url": "https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.0/spectre.min.css"})
 app.layout = html.Div([
@@ -167,14 +169,14 @@ def initMap(input,hourval,minuteval):
     if type(input) is list:
         textlist = input
         for a in input:
-            orb = Orbital(a,tle_file='stations.txt')
+            orb = Orbital(a,tle_file=my_file)
             locationset = orb.get_lonlatalt(newdate)
             latlist.append(locationset[0])
             longlist.append(locationset[1])
     else:
         textlist = [input]
         print textlist
-        orb = Orbital(input, tle_file='stations.txt')
+        orb = Orbital(input, tle_file=my_file)
         locationset = orb.get_lonlatalt(newdate)
         latlist = [locationset[0]]
         longlist = [locationset[1]]
